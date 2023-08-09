@@ -14,6 +14,7 @@ public class ExpenseTrackerApp {
     // Create MVC components
     ExpenseTrackerModel model = new ExpenseTrackerModel();
     DefaultTableModel tableModel = new DefaultTableModel();
+    tableModel.addColumn("Serial");
     tableModel.addColumn("Amount");
     tableModel.addColumn("Category");
     tableModel.addColumn("Date");

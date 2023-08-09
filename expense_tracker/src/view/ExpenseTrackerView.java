@@ -94,11 +94,20 @@ public class ExpenseTrackerView extends JFrame {
   public void refreshTable(List<Transaction> transactions) {
       // Clear existing rows
       model.setRowCount(0);
-  
+      // Get row count
+      int rowNum = model.getRowCount();
+      double totalCost=0;
+      // Calculate total cost
+      for(Transaction t : transactions) {
+        totalCost+=t.getAmount();
+      }
       // Add rows from transactions list
       for(Transaction t : transactions) {
-        model.addRow(new Object[]{t.getAmount(), t.getCategory(), t.getTimestamp()}); 
+        model.addRow(new Object[]{rowNum+=1,t.getAmount(), t.getCategory(), t.getTimestamp()}); 
       }
+        // Add total row
+        Object[] totalRow = {"Total", null, null, totalCost};
+        model.addRow(totalRow);
   
       // Fire table update
       transactionsTable.updateUI();
