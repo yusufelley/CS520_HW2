@@ -21,36 +21,12 @@ public class ExpenseTrackerView extends JFrame {
   private DefaultTableModel model;
   
 
-  public JTable getTransactionsTable() {
-    return transactionsTable;
-  }
-
-  public double getAmountField() {
-    if(amountField.getText().isEmpty()) {
-      return 0;
-    }else {
-    double amount = Double.parseDouble(amountField.getText());
-    return amount;
-    }
-  }
-
-  public void setAmountField(JFormattedTextField amountField) {
-    this.amountField = amountField;
-  }
-
-  
-  public String getCategoryField() {
-    return categoryField.getText();
-  }
-
-  public void setCategoryField(JTextField categoryField) {
-    this.categoryField = categoryField;
-  }
-
-  public ExpenseTrackerView(DefaultTableModel model) {
+  public ExpenseTrackerView() {
     setTitle("Expense Tracker"); // Set title
     setSize(600, 400); // Make GUI larger
-    this.model = model;
+
+    String[] columnNames = {"serial", "Amount", "Category", "Date"};
+    this.model = new DefaultTableModel(columnNames, 0);
 
     addTransactionBtn = new JButton("Add Transaction");
 
@@ -115,6 +91,8 @@ public class ExpenseTrackerView extends JFrame {
     }  
   
 
+  
+  
   public JButton getAddTransactionBtn() {
     return addTransactionBtn;
   }
@@ -122,4 +100,29 @@ public class ExpenseTrackerView extends JFrame {
     return model;
   }
   // Other view methods
+    public JTable getTransactionsTable() {
+    return transactionsTable;
+  }
+
+  public double getAmountField() {
+    if(amountField.getText().isEmpty()) {
+      return 0;
+    }else {
+    double amount = Double.parseDouble(amountField.getText());
+    return amount;
+    }
+  }
+
+  public void setAmountField(JFormattedTextField amountField) {
+    this.amountField = amountField;
+  }
+
+  
+  public String getCategoryField() {
+    return categoryField.getText();
+  }
+
+  public void setCategoryField(JTextField categoryField) {
+    this.categoryField = categoryField;
+  }
 }

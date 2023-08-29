@@ -30,10 +30,19 @@ public class ExpenseTrackerController {
 
   }
 
-  public void addTransaction(Transaction t) {
+  public boolean addTransaction(double amount, String category) {
+    if (!InputValidation.isValidAmount(amount)) {
+      return false;
+    }
+    if (!InputValidation.isValidCategory(category)) {
+      return false;
+    }
+    
+    Transaction t = new Transaction(amount, category);
     model.addTransaction(t);
     view.getTableModel().addRow(new Object[]{t.getAmount(), t.getCategory(), t.getTimestamp()});
     refresh();
+    return true;
   }
   
   // Other controller methods
