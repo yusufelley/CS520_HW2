@@ -34,9 +34,9 @@ public class ExpenseTrackerApp {
       }
     });
 
-    // Handle add transaction button clicks
+    // Handle undo transaction button clicks
     view.getUndoTransactionBtn().addActionListener(e -> { // MARK
-      System.out.println(controller.removeTransaction(view.getSelectedRow()));
+      System.out.println(controller.undoTransaction(view.getSelectedRow()));
     });
   }
 }

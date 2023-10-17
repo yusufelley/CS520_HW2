@@ -47,7 +47,7 @@ public class ExpenseTrackerController {
   }
 
   // Other controller methods
-  public boolean removeTransaction(int index) { // MARK
+  public boolean undoTransaction(int index) { // MARK
 
     try {
       if (index == -1) {
