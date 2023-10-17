@@ -50,16 +50,6 @@ public class ExpenseTrackerView extends JFrame {
     // Enable single-row selection MARK
     transactionsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    // Add a selection listener to respond to row selection changes
-    transactionsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() { // MARK
-      @Override
-      public void valueChanged(ListSelectionEvent e) {
-        if (!e.getValueIsAdjusting()) {
-          handleRowSelection();
-        }
-      }
-    });
-
     // Layout components
     JPanel inputPanel = new JPanel();
     inputPanel.add(amountLabel);
@@ -70,7 +60,7 @@ public class ExpenseTrackerView extends JFrame {
 
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(addTransactionBtn);
-    buttonPanel.add(removeTransationBtn);
+    buttonPanel.add(removeTransationBtn); // MARK
 
     // Add panels to frame
     add(inputPanel, BorderLayout.NORTH);
@@ -111,6 +101,10 @@ public class ExpenseTrackerView extends JFrame {
     return addTransactionBtn;
   }
 
+  public JButton getUndoTransactionBtn() { // MARK
+    return removeTransationBtn;
+  }
+
   public DefaultTableModel getTableModel() {
     return model;
   }
@@ -141,8 +135,7 @@ public class ExpenseTrackerView extends JFrame {
     this.categoryField = categoryField;
   }
 
-  public void handleRowSelection() {
-    int selectedTransaction = transactionsTable.getSelectedRow();
-    ExpenseTrackerController.
+  public int getSelectedRow() { // MARK
+    return transactionsTable.getSelectedRow();
   }
 }
