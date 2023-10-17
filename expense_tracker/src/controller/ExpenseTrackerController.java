@@ -4,6 +4,8 @@ import view.ExpenseTrackerView;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import model.ExpenseTrackerModel;
 import model.Transaction;
 
@@ -46,10 +48,22 @@ public class ExpenseTrackerController {
 
   // Other controller methods
   public boolean removeTransaction(int index) { // MARK
-    Transaction transaction = model.getTransactions().get(index);
-    model.removeTransaction(transaction);
-    view.getTableModel().removeRow(0);
-    refresh();
-    return true;
+
+    try {
+      if (index == -1) {
+        throw new Exception("Please select a row to undo it");
+      }
+      Transaction transaction = model.getTransactions().get(index);
+      model.removeTransaction(transaction);
+      view.getTableModel().removeRow(0);
+      refresh();
+      return true;
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(
+          null,
+          e.getMessage(),
+          "Alert!", JOptionPane.ERROR_MESSAGE);
+    }
+    return false;
   }
 }
