@@ -38,5 +38,10 @@ public class ExpenseTrackerApp {
     view.getUndoTransactionBtn().addActionListener(e -> { // MARK
       System.out.println(controller.undoTransaction(view.getSelectedRow()));
     });
+
+    // Handle filter button clicks
+    view.getApplyFilterBtn().addActionListener(e -> { // MARK
+      controller.applyFilter();
+    });
   }
 }
