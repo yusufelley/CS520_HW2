@@ -20,8 +20,6 @@ public class ExpenseTrackerController {
   public ExpenseTrackerController(ExpenseTrackerModel model, ExpenseTrackerView view) {
     this.model = model;
     this.view = view;
-
-    // Set up view event handlers
   }
 
   public void refresh() {
@@ -75,18 +73,30 @@ public class ExpenseTrackerController {
     String filterType = view.getFilterType();
     if (filterType.equals("amount")) {
       double amount = view.getFilterAmount();
+      if(amount == -1.0){
+        JOptionPane.showMessageDialog(
+          null,
+          "Please enter a valid amount!!",
+          "Alert!", JOptionPane.ERROR_MESSAGE);
+      }
       String amountCondition = view.getFilterAmountCondition();
       AmountFilter amountFilter = new AmountFilter();
       amountFilter.setFilterParameters(Map.of("amount", amount, "condition", amountCondition));
-      List<Transaction> filteredTransactions = amountFilter.filter(transactions);
-      displayTransactions(filteredTransactions);
+      List<Integer> filteredTransactions = amountFilter.filter(transactions);
+      view.colorFilteredTransactions(filteredTransactions);
     } 
     else if (filterType.equals("category")) {
       String category = view.getFilterCategory();
+      if(category.equals("")){
+        JOptionPane.showMessageDialog(
+          null,
+          "Please enter a valid category!! \nValid Categories: {\"food\", \"travel\", \"bills\", \"entertainment\", \"other\"}",
+          "Alert!", JOptionPane.ERROR_MESSAGE);
+      }
       CategoryFilter categoryFilter = new CategoryFilter();
       categoryFilter.setFilterParameters(Map.of("category", category));
-      List<Transaction> filteredTransactions = categoryFilter.filter(transactions);
-      displayTransactions(filteredTransactions);
+      List<Integer> filteredTransactions = categoryFilter.filter(transactions);
+      view.colorFilteredTransactions(filteredTransactions);
     } else {
       JOptionPane.showMessageDialog(
           null,
@@ -94,10 +104,4 @@ public class ExpenseTrackerController {
           "Alert!", JOptionPane.ERROR_MESSAGE);
     }
   }
-
-  private static void displayTransactions(List<Transaction> transactions) {
-    for (Transaction transaction : transactions) {
-        System.out.println("Amount: " + transaction.getAmount() + ", Category: " + transaction.getCategory());
-    }
-}
 }

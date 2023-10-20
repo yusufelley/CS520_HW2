@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.JFormattedTextField.AbstractFormatterFactory;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ExpenseTrackerController;
@@ -15,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 
 import model.Transaction;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseTrackerView extends JFrame {
@@ -30,6 +33,8 @@ public class ExpenseTrackerView extends JFrame {
   private JComboBox filterAmountConditions; // MARK
   private JTextField filterCategoryField; // MARK
   private JButton applyFilterBtn;
+
+  InputValidation inputValidation = new InputValidation();
 
   public ExpenseTrackerView() {
     setTitle("Expense Tracker"); // Set title
@@ -123,6 +128,8 @@ public class ExpenseTrackerView extends JFrame {
         amountFilterPanel.setVisible(true);
         categoryFilterPanel.setVisible(false);
         setFilterType("amount");
+        List<Integer> empty_list = new ArrayList<Integer>();
+        colorFilteredTransactions(empty_list);
       }
     });
 
@@ -131,6 +138,8 @@ public class ExpenseTrackerView extends JFrame {
         amountFilterPanel.setVisible(false);
         categoryFilterPanel.setVisible(true);
         setFilterType("category");
+        List<Integer> empty_list = new ArrayList<Integer>();
+        colorFilteredTransactions(empty_list);
       }
     });
 
@@ -228,12 +237,14 @@ public class ExpenseTrackerView extends JFrame {
   }
 
   public String getFilterType() { // MARK
-    return this.filterType;
+    if(this.filterType != null)
+      return this.filterType;
+    return "";
   }
 
   public double getFilterAmount() { // MARK
-    if (filterAmountField.getText().isEmpty()) {
-      return 0;
+    if (filterAmountField.getText().isEmpty() || !InputValidation.isValidAmount(Double.parseDouble(filterAmountField.getText()))) {
+      return -1.0;
     } else {
       double filterAmount = Double.parseDouble(filterAmountField.getText());
       return filterAmount;
@@ -250,6 +261,36 @@ public class ExpenseTrackerView extends JFrame {
   }
 
   public String getFilterCategory() { // MARK
+    if (!InputValidation.isValidCategory(filterCategoryField.getText())) 
+      return "";
     return filterCategoryField.getText();
   }
+
+  public void colorFilteredTransactions(List<Integer> filteredTransactions){
+    transactionsTable.setDefaultRenderer(Object.class, new ColoredRowRenderer(filteredTransactions)); // Index of the row to be colored
+    transactionsTable.repaint();
+  }
+}
+
+
+class ColoredRowRenderer extends DefaultTableCellRenderer {
+    private List<Integer> targetRows;
+
+    public ColoredRowRenderer(List<Integer> targetRows) {
+        this.targetRows = targetRows;
+    }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+        if (targetRows.contains(row)) {
+            // Set background color for the specified rows
+            rendererComponent.setBackground(Color.GREEN);
+        } else {
+            // Reset background color for other rows
+            rendererComponent.setBackground(table.getBackground());
+        }
+        return rendererComponent;
+    }
 }

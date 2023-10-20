@@ -6,23 +6,24 @@ import java.util.Map;
 
 import model.Transaction;
 
-public class CategoryFilter implements TransactionFilter{
+public class CategoryFilter implements TransactionFilter {
 
     private String category;
 
     @Override
-    public List<Transaction> filter(List<Transaction> transactions) {
-         List<Transaction> filteredTransactions = new ArrayList<>();
+    public List<Integer> filter(List<Transaction> transactions) {
+        List<Integer> filteredTransactions = new ArrayList<>();
 
-        for (Transaction transaction : transactions) {
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction transaction = transactions.get(i);
             if (applyCategoryFilter(transaction)) {
-                filteredTransactions.add(transaction);
+                filteredTransactions.add(i);
             }
         }
 
         return filteredTransactions;
     }
-    
+
     @Override
     public void setFilterParameters(Map<String, Object> parameters) {
         this.category = (String) parameters.get("category");
