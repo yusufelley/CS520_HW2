@@ -1,11 +1,7 @@
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-
 import controller.ExpenseTrackerController;
 import model.ExpenseTrackerModel;
 import view.ExpenseTrackerView;
-import model.Transaction;
-import controller.InputValidation;
 
 public class ExpenseTrackerApp {
 
@@ -35,12 +31,12 @@ public class ExpenseTrackerApp {
     });
 
     // Handle undo transaction button clicks
-    view.getUndoTransactionBtn().addActionListener(e -> { // MARK
+    view.getUndoTransactionBtn().addActionListener(e -> { 
       System.out.println(controller.undoTransaction(view.getSelectedRow()));
     });
 
     // Handle filter button clicks
-    view.getApplyFilterBtn().addActionListener(e -> { // MARK
+    view.getApplyFilterBtn().addActionListener(e -> { 
       controller.applyFilter();
     });
   }

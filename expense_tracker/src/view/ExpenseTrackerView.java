@@ -1,13 +1,9 @@
 package view;
 
 import javax.swing.*;
-import javax.swing.JFormattedTextField.AbstractFormatterFactory;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import controller.ExpenseTrackerController;
 import controller.InputValidation;
 
 import java.awt.*;
@@ -27,11 +23,11 @@ public class ExpenseTrackerView extends JFrame {
   private JFormattedTextField amountField;
   private JTextField categoryField;
   private DefaultTableModel model;
-  private JButton undoTransactionBtn; // MARK
+  private JButton undoTransactionBtn; 
   private String filterType;
-  private JFormattedTextField filterAmountField; // MARK
-  private JComboBox filterAmountConditions; // MARK
-  private JTextField filterCategoryField; // MARK
+  private JFormattedTextField filterAmountField; 
+  private JComboBox<String> filterAmountConditions; 
+  private JTextField filterCategoryField; 
   private JButton applyFilterBtn;
 
   InputValidation inputValidation = new InputValidation();
@@ -44,8 +40,8 @@ public class ExpenseTrackerView extends JFrame {
     this.model = new DefaultTableModel(columnNames, 0);
 
     addTransactionBtn = new JButton("Add Transaction");
-    undoTransactionBtn = new JButton("Undo Transaction"); // MARK
-    applyFilterBtn = new JButton("Apply Filter"); // MARK
+    undoTransactionBtn = new JButton("Undo Transaction"); 
+    applyFilterBtn = new JButton("Apply Filter"); 
 
     // Create UI components
     JLabel amountLabel = new JLabel("Amount:");
@@ -63,7 +59,7 @@ public class ExpenseTrackerView extends JFrame {
     filterCategoryField = new JTextField(10);
     
     // create checkbox
-    String conditions[] = { ">", "<", "=", ">=", "<=" }; // MARK
+    String conditions[] = { ">", "<", "=", ">=", "<=" }; 
     filterAmountConditions = new JComboBox<String>(conditions);
 
     // Create table
@@ -78,7 +74,7 @@ public class ExpenseTrackerView extends JFrame {
     inputPanel.add(amountField);
     inputPanel.add(categoryLabel);
     inputPanel.add(categoryField);
-    inputPanel.add(addTransactionBtn); // MARK
+    inputPanel.add(addTransactionBtn); 
 
     // Create Filter UI components
     JLabel filterLabel = new JLabel("Filters");
@@ -123,6 +119,8 @@ public class ExpenseTrackerView extends JFrame {
     filterPanel.add(applyFilterBtn);
 
     // Add listener for radio buttons
+
+    // Performing tasks when the amount filter is being used
     amountFilterRadio.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         amountFilterPanel.setVisible(true);
@@ -133,6 +131,7 @@ public class ExpenseTrackerView extends JFrame {
       }
     });
 
+    // Performing tasks when the category filter is being used
     categoryFilterRadio.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         amountFilterPanel.setVisible(false);
@@ -149,7 +148,7 @@ public class ExpenseTrackerView extends JFrame {
 
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(addTransactionBtn);
-    buttonPanel.add(undoTransactionBtn); // MARK
+    buttonPanel.add(undoTransactionBtn); 
 
     // Add panels to frame
     add(inputPanel, BorderLayout.NORTH);
@@ -190,11 +189,11 @@ public class ExpenseTrackerView extends JFrame {
     return addTransactionBtn;
   }
 
-  public JButton getUndoTransactionBtn() { // MARK
+  public JButton getUndoTransactionBtn() { 
     return undoTransactionBtn;
   }
 
-  public JButton getApplyFilterBtn() { // MARK
+  public JButton getApplyFilterBtn() { 
     return applyFilterBtn;
   }
 
@@ -228,21 +227,25 @@ public class ExpenseTrackerView extends JFrame {
     this.categoryField = categoryField;
   }
 
-  public int getSelectedRow() { // MARK
+  // Get the current selected row from the transaction table
+  public int getSelectedRow() { 
     return transactionsTable.getSelectedRow();
   }
 
-  public void setFilterType(String filterType) { // MARK
+  // Set the type of filter i.e. amount or catgeory
+  public void setFilterType(String filterType) { 
     this.filterType = filterType;
   }
 
-  public String getFilterType() { // MARK
+  // Return the type of filter i.e. amount or catgeory
+  public String getFilterType() { 
     if(this.filterType != null)
       return this.filterType;
     return "";
   }
 
-  public double getFilterAmount() { // MARK
+  // Return the amount being used to filter transactions
+  public double getFilterAmount() { 
     if (filterAmountField.getText().isEmpty() || !InputValidation.isValidAmount(Double.parseDouble(filterAmountField.getText()))) {
       return -1.0;
     } else {
@@ -251,7 +254,8 @@ public class ExpenseTrackerView extends JFrame {
     }
   }
 
-  public String getFilterAmountCondition() { // MARK
+  // Return the condition being used to filter transactions
+  public String getFilterAmountCondition() { 
     String conditon = filterAmountConditions.getSelectedItem().toString();
     if(conditon.equals(">")) return "greaterthan";
     else if(conditon.equals("<")) return "lessthan";
@@ -260,18 +264,19 @@ public class ExpenseTrackerView extends JFrame {
     else return "equalto";
   }
 
-  public String getFilterCategory() { // MARK
+  // Return the category being used to filter transactions
+  public String getFilterCategory() { 
     if (!InputValidation.isValidCategory(filterCategoryField.getText())) 
       return "";
     return filterCategoryField.getText();
   }
 
+  // ColorRender class used to color the filtered rows in the transaction table
   public void colorFilteredTransactions(List<Integer> filteredTransactions){
     transactionsTable.setDefaultRenderer(Object.class, new ColoredRowRenderer(filteredTransactions)); // Index of the row to be colored
     transactionsTable.repaint();
   }
 }
-
 
 class ColoredRowRenderer extends DefaultTableCellRenderer {
     private List<Integer> targetRows;
@@ -286,7 +291,7 @@ class ColoredRowRenderer extends DefaultTableCellRenderer {
 
         if (targetRows.contains(row)) {
             // Set background color for the specified rows
-            rendererComponent.setBackground(Color.GREEN);
+            rendererComponent.setBackground(new Color(173, 255, 168));
         } else {
             // Reset background color for other rows
             rendererComponent.setBackground(table.getBackground());
